@@ -1,4 +1,4 @@
-package com.example.arun.heartbeatarun;
+package com.example.project.heartbeat;
 
 import org.junit.Test;
 

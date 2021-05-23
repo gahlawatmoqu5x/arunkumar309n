@@ -1,4 +1,4 @@
-package com.example.arun.heartbeatarun;
+package com.example.project.heartbeat;
 
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;

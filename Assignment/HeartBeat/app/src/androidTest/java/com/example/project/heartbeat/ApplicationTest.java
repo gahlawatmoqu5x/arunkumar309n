@@ -1,4 +1,4 @@
-package com.example.arun.heartbeatarun;
+package com.example.project.heartbeat;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
