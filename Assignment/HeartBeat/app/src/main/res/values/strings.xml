@@ -2,15 +2,17 @@
     <string name="app_name">Heart Beat Monitor</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="create">Create</string>
+    <string name="view">View Patients</string>
     <string name="text">Enter Text here</string>
     <string name="stopPressed">Stop Pressed</string>
     <string name="startPressed">Start Pressed</string>
-    <string-array name = "ages">
+    <string-array name="ages">
         <item>A103</item>
         <item>A23</item>
         <item>A204</item>
         <item>A007</item>
         <item>A412</item>
         <item>A535</item>
-</string-array>
+    </string-array>
 </resources>
