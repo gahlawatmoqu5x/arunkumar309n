@@ -69,7 +69,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/text"
         android:id="@+id/textView"
         android:layout_marginBottom="38dp"
         android:layout_above="@+id/graph"
@@ -104,7 +103,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Balaji"
         android:id="@+id/editText2"
         android:textSize="20dp"
         android:layout_below="@+id/spinner"
@@ -115,41 +113,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sex:"
-        android:id="@+id/textView4"
-        android:textStyle="bold|italic"
-        android:textSize="20dp"
-        android:layout_below="@+id/textView3" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Male"
-        android:id="@+id/editText5"
-        android:textSize="20dp"
-        android:layout_toRightOf="@+id/textView4"
-        android:layout_below="@+id/textView3"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Age:"
         android:id="@+id/textView5"
         android:textStyle="bold|italic"
         android:textSize="20dp"
-        android:layout_below="@+id/textView4"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="24"
-        android:id="@+id/editText3"
-        android:layout_toRightOf="@+id/textView5"
-        android:layout_below="@+id/textView4"
-         />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView3" />
 
 
     <Spinner
@@ -171,6 +141,24 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="40dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText4"
+        android:layout_above="@+id/editText7"
+        android:layout_toEndOf="@+id/editText2" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText7"
+        android:layout_below="@+id/textView3"
+        android:layout_toRightOf="@+id/button"
+        android:layout_alignRight="@+id/editText2"
+        android:layout_alignEnd="@+id/editText2" />
 
 
 </RelativeLayout>
