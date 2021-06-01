@@ -46,9 +46,9 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     int yaxisValue;
     int xaxisValue;
     int zaxisValue;
-    EditText nameEditText;
+    TextView nameEditText;
     //editText3
-    EditText ageEditText;
+    TextView ageEditText;
     String message="defaultMessage";
     String ageMessage="defaultAge";
     // 3/6/2016 end change
@@ -78,8 +78,8 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         SM = (SensorManager) getSystemService(SENSOR_SERVICE);
         mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
-        nameEditText= (EditText) findViewById(R.id.editText4);
-        ageEditText = (EditText) findViewById(R.id.editText7);
+        nameEditText= (TextView) findViewById(R.id.editText2);
+        ageEditText = (TextView) findViewById(R.id.editText3);
         // 3/6/2016 end change
         startButton = (Button) findViewById(R.id.button);
         stopButton = (Button) findViewById(R.id.button2);
