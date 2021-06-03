@@ -15,6 +15,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.*;
 import com.jjoe64.graphview.series.Series;
+import android.graphics.Color;
 
 import org.w3c.dom.Text;
 
@@ -56,9 +57,14 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     private Button stopButton;
     private GraphView graph;
     private TextView textField;
-    private LineGraphSeries<DataPoint> series;
+    private LineGraphSeries<DataPoint> xseries;
+    private LineGraphSeries<DataPoint> yseries;
+    private LineGraphSeries<DataPoint> zseries;
     private int lastX = 0;
-    private Queue<Double> queue = new LinkedList<Double>();
+    private Queue<Double> xqueue = new LinkedList<Double>();
+    private Queue<Double> yqueue = new LinkedList<Double>();
+    private Queue<Double> zqueue = new LinkedList<Double>();
+
     private static Random random = new Random();
     private boolean pause = false;
     final int N = 1000;
@@ -85,8 +91,15 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         stopButton = (Button) findViewById(R.id.button2);
         textField = (TextView) findViewById(R.id.textView);
         graph = (GraphView) findViewById(R.id.graph);
-        series = new LineGraphSeries<DataPoint>();
-        graph.addSeries(series);
+        xseries = new LineGraphSeries<DataPoint>();
+        xseries.setColor(Color.parseColor("#00ff00"));
+        yseries = new LineGraphSeries<DataPoint>();
+        yseries.setColor(Color.parseColor("#ff0000"));
+        zseries = new LineGraphSeries<DataPoint>();
+        zseries.setColor(Color.parseColor("#0000ff"));
+        graph.addSeries(xseries);
+        graph.addSeries(yseries);
+        graph.addSeries(zseries);
         Viewport viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
         viewport.setMinY(0);
@@ -100,9 +113,9 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     // 3/6/2016 start change
     @Override
     public void onSensorChanged(SensorEvent event) {
-         xaxisValue = (int) event.values[0]+ 30;
-        yaxisValue = ((int) event.values[1] + (int) event.values[2])+ 30;
-        zaxisValue = (int) event.values[2]+ 30;
+         xaxisValue = (int) event.values[0]+ 20;
+        yaxisValue = (int) event.values[1] + 30;
+        zaxisValue = (int) event.values[2]+ 10;
 
         // normalizing by adding +30
         // we have to discuss what to do with the xaxisValue because I am not using it
@@ -121,7 +134,9 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
                 for (int i = 0; i < N; i++) {
                     // 3/6/2016 start change
                     //queue.add(random.nextDouble()*100d);
-                    queue.add((double) yaxisValue);
+                    xqueue.add((double) xaxisValue);
+                    yqueue.add((double) yaxisValue);
+                    zqueue.add((double) zaxisValue);
                     // 3/6/2016 end change
                     runOnUiThread(new Runnable() {
 
@@ -146,10 +161,15 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     private void addEntry() {
         String contactName = nameEditText.getText().toString();
         // here, we choose to display max 10 points on the viewport and we scroll to end
-        Object data = queue.poll();
-        if (data != null && pause) {
-            series.appendData(new DataPoint(lastX++, (double) data), true, 10);
-            textField.setText(Double.toString((Double) data));
+        Object datax = xqueue.poll();
+        Object datay = yqueue.poll();
+        Object dataz=zqueue.poll();
+
+        if (datax != null && datay!=null && dataz!=null && pause) {
+            xseries.appendData(new DataPoint(lastX, (double) datax), true, 10);
+            yseries.appendData(new DataPoint(lastX, (double) datay), true, 10);
+            zseries.appendData(new DataPoint(lastX++, (double) dataz), true, 10);
+            //textField.setText(Double.toString((Double) datax));
 
             AccelorometerDB.execSQL("INSERT INTO MyAccTable1 (name, xaxis, yaxis, zaxis) VALUES ('" +
                     contactName + "', '" + xaxisValue + "', '" + yaxisValue + "', '" + zaxisValue + "');");
