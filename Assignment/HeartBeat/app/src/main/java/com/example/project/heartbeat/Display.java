@@ -6,11 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class Display extends AppCompatActivity {
-EditText displayEditText,displayContactsDbEditTest;
+TextView displayEditText,displayContactsDbEditTest;
     SQLiteDatabase mDB;
     SQLiteDatabase AccelorometerDB;
     String Studentname;
@@ -19,8 +20,10 @@ EditText displayEditText,displayContactsDbEditTest;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
-        displayEditText = (EditText) findViewById(R.id.editText);
-        displayContactsDbEditTest = (EditText) findViewById(R.id.editText6);
+        displayEditText = (TextView) findViewById(R.id.editText);
+        displayEditText.setTextSize(16);
+        displayContactsDbEditTest = (TextView) findViewById(R.id.editText6);
+        displayContactsDbEditTest.setTextSize(16);
         Intent intent1 = getIntent();
         Studentname = intent1.getStringExtra("message1");
         Studentname= Studentname.toString();
