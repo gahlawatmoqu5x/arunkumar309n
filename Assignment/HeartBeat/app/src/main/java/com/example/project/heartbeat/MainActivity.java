@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +31,11 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase contactsDB = null;
 
     Button createDBButton, getContactsButton;
-    EditText nameEditText,ageEditText;
+    EditText nameEditText,ageEditText,idEditText;
     String contactName;
     String Contactage;
+    String userID;
+    private RadioGroup radioGenderGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +44,39 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         nameEditText = (EditText) findViewById(R.id.editText2);
         ageEditText =  (EditText) findViewById(R.id.editText3);
+        idEditText =  (EditText) findViewById(R.id.IDeditText);
+        radioGenderGroup = (RadioGroup) findViewById(R.id.radioGroup2);
     }
     public void gotoNext(View view) {
-       Intent intent = new Intent(this, Display.class);
-        startActivity(intent);
+//       Intent intent = new Intent(this, Display.class);
+//        startActivity(intent);
         // Do something in response to button
     }
 
+    public boolean nullOrEmptyCheck(String a)
+    {
+        if(a==null || a.length()==0)
+        {
+            return true;
+        }
+        return false;
+    }
 
     public void CreateuserInDb(View view) {
+        contactName = nameEditText.getText().toString();
+        Contactage = ageEditText.getText().toString();
+        userID=idEditText.getText().toString();
+        int radioId=radioGenderGroup.getCheckedRadioButtonId();
+        if(nullOrEmptyCheck(contactName) || nullOrEmptyCheck(Contactage) || nullOrEmptyCheck(userID) || radioId==-1)
+        {
+            Toast.makeText(this, "One or more fields empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         try{
+            RadioButton rad=(RadioButton) findViewById(radioId);
+            String gender=rad.getText().toString();
+            System.out.println("=================="+gender);
 
             // Opens a current database or creates it
             // Pass the database name, designate that only this app can use it
@@ -65,13 +92,12 @@ public class MainActivity extends AppCompatActivity {
 
             // Check if the database exists
             if (database.exists()) {
-                Toast.makeText(this, "Database Created", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Table Created", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Database Missing", Toast.LENGTH_SHORT).show();
             }
 
-             contactName = nameEditText.getText().toString();
-            Contactage = ageEditText.getText().toString();
+
             // Execute SQL statement to insert new data
             contactsDB.execSQL("INSERT INTO contacts2 (name, age) VALUES ('" +
                     contactName + "', '" + Contactage + "');");

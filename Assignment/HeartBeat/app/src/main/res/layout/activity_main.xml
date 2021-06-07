@@ -86,6 +86,27 @@
         android:layout_alignLeft="@+id/textView4"
         android:layout_alignStart="@+id/textView4" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID:"
+        android:id="@+id/IDtext"
+        android:textStyle="bold|italic"
+        android:textSize="20dp"
+        android:layout_below="@+id/editText3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/IDeditText"
+        android:layout_below="@+id/IDtext"
+        android:layout_alignLeft="@+id/IDtext"
+        android:layout_alignStart="@+id/IDtext" />
+
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -133,7 +154,7 @@
         android:layout_height="wrap_content"
         android:text="@string/create"
         android:id="@+id/button"
-        android:layout_below="@+id/editText3"
+        android:layout_below="@+id/IDeditText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:onClick="CreateuserInDb"
