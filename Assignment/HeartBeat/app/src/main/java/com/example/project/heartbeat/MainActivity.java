@@ -1,6 +1,7 @@
 package com.example.project.heartbeat;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     String contactName;
     String Contactage;
     String userID;
+    String gender;
+    String tableName;
+    boolean tableExists;
     private RadioGroup radioGenderGroup;
 
     @Override
@@ -63,15 +67,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void CreateuserInDb(View view) {
+        Intent intent = new Intent(this, InitialActivity.class);
         contactName = nameEditText.getText().toString();
         Contactage = ageEditText.getText().toString();
         userID=idEditText.getText().toString();
         int radioId=radioGenderGroup.getCheckedRadioButtonId();
+        RadioButton rad=(RadioButton) findViewById(radioId);
+        gender=rad.getText().toString();
         if(nullOrEmptyCheck(contactName) || nullOrEmptyCheck(Contactage) || nullOrEmptyCheck(userID) || radioId==-1)
         {
             Toast.makeText(this, "One or more fields empty", Toast.LENGTH_SHORT).show();
             return;
         }
+        else {
+            contactsDB = this.openOrCreateDatabase("MyContacts1.db", MODE_PRIVATE, null);
+            tableName = contactName + "_" + Contactage + "_" + userID + "_" + gender;
+            try {
+                Cursor c = null;
+                c = contactsDB.query(tableName, null, null, null, null, null, null);
+                tableExists = true;
+                Toast.makeText(this, "Table Exists", Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception e) {
+                contactsDB.execSQL("CREATE TABLE " + tableName +
+                        " (timestamp TEXT, xValue integer, yValue integer, zValue integer);");
+                tableExists = false;
+                Toast.makeText(this, "Table Created", Toast.LENGTH_SHORT).show();
+            }
+        }
+        intent.putExtra("tableExists", tableExists);
+        intent.putExtra("tableName", tableName);
+        intent.putExtra("userName", contactName);
+        intent.putExtra("message", contactName );
+        intent.putExtra("messageAge", ageEditText.getText().toString() );
+        startActivity(intent);
+/*
 
         try{
             RadioButton rad=(RadioButton) findViewById(radioId);
@@ -114,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("message", contactName );
         intent.putExtra("messageAge", ageEditText.getText().toString() );
         startActivity(intent);
+*/
     }
 
 }

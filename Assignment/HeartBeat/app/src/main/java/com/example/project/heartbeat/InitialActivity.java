@@ -52,6 +52,9 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     TextView ageEditText;
     String message="defaultMessage";
     String ageMessage="defaultAge";
+    String tableName;
+    String userName;
+    boolean tableExists;
     // 3/6/2016 end change
     private Button startButton;
     private Button stopButton;
@@ -61,12 +64,14 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     private LineGraphSeries<DataPoint> yseries;
     private LineGraphSeries<DataPoint> zseries;
     private int lastX = 0;
-    private Queue<Double> xqueue = new LinkedList<Double>();
-    private Queue<Double> yqueue = new LinkedList<Double>();
-    private Queue<Double> zqueue = new LinkedList<Double>();
+    private Queue<Float> xqueue = new LinkedList<Float>();
+    private Queue<Float> yqueue = new LinkedList<Float>();
+    private Queue<Float> zqueue = new LinkedList<Float>();
+    long lastUpdate = 0;
 
     private static Random random = new Random();
     private boolean pause = false;
+    private boolean senseData = false;
     final int N = 1000;
 
 
@@ -80,6 +85,15 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         message= message.toString();
         ageMessage = intent.getStringExtra("messageAge");
         ageMessage= ageMessage.toString();
+
+        tableName = intent.getStringExtra("tableName").toString();
+        userName = intent.getStringExtra("userName").toString();
+        if (intent.getBooleanExtra("tableExists", false)) tableExists = true;
+        else tableExists = false;
+        if (tableExists)
+            Toast.makeText(this, "Welcome back, " + userName + "!", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this, "Happy to have you, " + userName + "! :)", Toast.LENGTH_SHORT).show();
 
         SM = (SensorManager) getSystemService(SENSOR_SERVICE);
         mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -113,6 +127,33 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     // 3/6/2016 start change
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (senseData) {
+            Sensor mySensor = event.sensor;
+
+            if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+                long curTime = System.currentTimeMillis();
+                xqueue.add(x);
+                yqueue.add(y);
+                zqueue.add(z);
+                if ((curTime - lastUpdate) > 1000) {
+                    lastUpdate = curTime;
+                    AccelorometerDB.execSQL("INSERT INTO " + tableName + "(timestamp, xValue, yValue, zValue) VALUES ('" +
+                            curTime + "', '" + x + "', '" + y + "', '" + z + "');");
+
+                }
+
+            }
+            xaxisValue = (int) event.values[0] + 20;
+            yaxisValue = (int) event.values[1] + 30;
+            zaxisValue = (int) event.values[2] + 10;
+
+
+            // normalizing by adding +30
+            // we have to discuss what to do with the xaxisValue because I am not using it
+        }
          xaxisValue = (int) event.values[0]+ 20;
         yaxisValue = (int) event.values[1] + 30;
         zaxisValue = (int) event.values[2]+ 10;
@@ -122,11 +163,22 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
 
     }
 
+    public void connectDB(View view){
+        AccelorometerDB = this.openOrCreateDatabase("MyContacts1.db", MODE_PRIVATE, null);
+        senseData = true;
+        Toast.makeText(this, "DB CONNECTED", Toast.LENGTH_SHORT).show();
+    }
+
     // 3/6/2016 end change
     @Override
     protected void onResume(){
         super.onResume();
-        // we're going to simulate real time with thread that append data to the graph
+        View rootView = null;
+        View currentFocus = getWindow().getCurrentFocus();
+        if (currentFocus != null)
+            rootView = currentFocus.getRootView();
+        connectDB(rootView);
+/*        // we're going to simulate real time with thread that append data to the graph
         new Thread(new Runnable() {
 
             @Override
@@ -154,7 +206,33 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
                     }
                 }
             }
-        }).start();
+        }).start();*/
+    }
+
+    private void getValueFromTable(){
+        String sqlQuery = "select * from " + tableName + ";";
+        System.out.print(sqlQuery);
+        Cursor c = null;
+        c = AccelorometerDB.rawQuery(sqlQuery,null);
+        // AccelorometerDB.query(tableName, new String[] {"xValue", "yValue", "zValue"}, null, null, null, null, null);
+        //AccelorometerDB.rawQuery("select * from ?", new String[] {tableName});
+        if (c!= null){
+            int count = c.getCount();
+            if(count>10){
+                for(int i = count-10;i<count; i++){
+                    c.moveToPosition(i);
+                    Double xVal = Double.parseDouble(c.getString(1));
+                    Double yVal = Double.parseDouble(c.getString(2));
+                    Double zVal = Double.parseDouble(c.getString(3));
+                    xseries.appendData(new DataPoint(lastX, (double) xVal), true, 10);
+                    yseries.appendData(new DataPoint(lastX, (double) yVal), true, 10);
+                    zseries.appendData(new DataPoint(lastX++, (double) zVal), true, 10);
+                }
+            }
+            else{
+                Toast.makeText(this, "Not enough values to plot!",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     // add random data to graph
@@ -178,7 +256,9 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     public void startFunc(View view){
        // textField.setText(R.string.startPressed);
         pause = true;
+        getValueFromTable();
 
+/*
         // 3/6/2016 start change
 
         try{
@@ -223,6 +303,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
 
         // 3/6/2016 end change
 
+*/
 
 
 
@@ -230,6 +311,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     public void stopFunc(View view){
       //  textField.setText(R.string.stopPressed);
         pause = false;
+        graph.removeAllSeries();
         // 3/6/2016 start change
         Intent intent = new Intent(this, Display.class);
         intent.putExtra("message1", message);
