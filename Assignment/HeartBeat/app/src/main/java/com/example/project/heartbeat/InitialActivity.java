@@ -59,7 +59,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     private Button startButton;
     private Button stopButton;
     private GraphView graph;
-    private TextView textField;
+    //private TextView textField;
     private LineGraphSeries<DataPoint> xseries;
     private LineGraphSeries<DataPoint> yseries;
     private LineGraphSeries<DataPoint> zseries;
@@ -103,7 +103,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         // 3/6/2016 end change
         startButton = (Button) findViewById(R.id.button);
         stopButton = (Button) findViewById(R.id.button2);
-        textField = (TextView) findViewById(R.id.textView);
+        //textField = (TextView) findViewById(R.id.textView);
         graph = (GraphView) findViewById(R.id.graph);
         xseries = new LineGraphSeries<DataPoint>();
         xseries.setColor(Color.parseColor("#00ff00"));
@@ -314,7 +314,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         graph.removeAllSeries();
         // 3/6/2016 start change
         Intent intent = new Intent(this, Display.class);
-        intent.putExtra("message1", message);
+        intent.putExtra("tableName", tableName).putExtra("message1", message);
         startActivity(intent);
         // 3/6/2016 start change
 

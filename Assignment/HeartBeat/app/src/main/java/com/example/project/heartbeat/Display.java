@@ -26,49 +26,56 @@ TextView displayEditText,displayContactsDbEditTest;
         displayContactsDbEditTest.setTextSize(16);
         Intent intent1 = getIntent();
         Studentname = intent1.getStringExtra("message1");
+        String tableName = intent1.getStringExtra("tableName");
         Studentname= Studentname.toString();
+        StringBuffer tableContents = new StringBuffer();
 
        mDB =  this.openOrCreateDatabase("MyContacts1.db", MODE_PRIVATE, null);
        AccelorometerDB = this.openOrCreateDatabase("MyAccDB.db", MODE_PRIVATE, null);
         // start
-       Cursor cursor = mDB.rawQuery("SELECT * FROM contacts2 WHERE name = '" + Studentname + "'",null);
-      Cursor cursorForAccel = AccelorometerDB.rawQuery("SELECT * FROM MyAccTable1 WHERE name = '" + Studentname + "'" +"LIMIT 6",null);
+        // Cursor cursor = mDB.rawQuery("SELECT * FROM contacts2 WHERE name = '" + Studentname + "'",null);
+        Cursor cursor = mDB.rawQuery("SELECT * FROM " + tableName + ";", null);
+        Cursor cursorForAccel = AccelorometerDB.rawQuery("SELECT * FROM MyAccTable1 WHERE name = '" + Studentname + "'" + "LIMIT 6", null);
 
         // Get the index for the column name provided
 
-       int idColumn = cursor.getColumnIndex("id");
-        int nameColumn = cursor.getColumnIndex("name");
-        int ageColumn = cursor.getColumnIndex("age");
-
         cursor.moveToFirst();
 
-        String contactList = "";
+        StringBuffer contactList = new StringBuffer();
+        tableContents.append("Timestamp\t\txValue\tyValue\tzValue");
 
         // Verify that we have results
         if(cursor != null && (cursor.getCount() > 0)){
 
             do{
                 // Get the results and store them in a String
-                String id = cursor.getString(idColumn);
+               /* String id = cursor.getString(idColumn);
                 String name = cursor.getString(nameColumn);
                 String age = cursor.getString(ageColumn);
-
-                contactList = contactList + id + " Name : " + name + " " +"Age : " + age+ "\n" + "\n" + "\n";
+*/
+                String timeStamp = cursor.getString(0);
+                String xValue = cursor.getString(1);
+                String yValue = cursor.getString(2);
+                String zValue = cursor.getString(3);
+                tableContents.append(timeStamp).append("\t\t").append(xValue).append("\t").append(yValue).append("\t").append(zValue);
+                //contactList = contactList + id + " Name : " + name + " " +"Age : " + age+ "\n" + "\n" + "\n";
 
                 // Keep getting results as long as they exist
             }while(cursor.moveToNext());
+            contactList.append(tableName);
 
-           // displayContactsDbEditTest.setText(contactList);
-            displayEditText.setText(contactList);
+            // displayContactsDbEditTest.setText(contactList);
+            displayEditText.setText(contactList.toString());
+            displayContactsDbEditTest.setText(tableContents.toString());
 
         } else {
 
             Toast.makeText(this, "No Results to Show", Toast.LENGTH_SHORT).show();
             //displayContactsDbEditTest.setText("");
-            displayEditText.setText("");
-
+            displayEditText.setText("Table not found");
+            displayContactsDbEditTest.setText("Table not found");
         }
-        // code for retirving acdelerometr data
+/*        // code for retirving acdelerometr data*//*
 
 
      // Get the index for the column name provided
@@ -82,7 +89,7 @@ TextView displayEditText,displayContactsDbEditTest;
         // Move to the first row of results
         cursorForAccel.moveToFirst();
 
-        String AccelDetails = "";
+        //String AccelDetails = "";
 
         // Verify that we have results
         if(cursorForAccel != null && (cursorForAccel.getCount() > 0)){
@@ -110,9 +117,6 @@ TextView displayEditText,displayContactsDbEditTest;
            // displayEditText.setText("");
             displayContactsDbEditTest.setText("");
 
-        }
-
-
-
+        }*/
     }
 }
