@@ -32,6 +32,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.widget.Toast;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.content.Context;
+import com.example.project.heartbeat.util.DatabaseUploader;
+
 public class InitialActivity extends AppCompatActivity implements SensorEventListener {
 
 
@@ -167,6 +172,23 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         AccelorometerDB = this.openOrCreateDatabase("MyContacts1.db", MODE_PRIVATE, null);
         senseData = true;
         Toast.makeText(this, "DB CONNECTED", Toast.LENGTH_SHORT).show();
+    }
+    public void uploadDB(){
+        DatabaseUploader dbUploader = new DatabaseUploader();
+        File database = getApplicationContext().getDatabasePath("MyContacts1.db");
+        if (database.exists()) {
+            ConnectivityManager connMgr = (ConnectivityManager)
+                    getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                dbUploader.execute(database);
+            }
+        }
+        else
+        {
+            System.out.println("No database");
+        }
+
     }
 
     // 3/6/2016 end change
