@@ -83,6 +83,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("ewrwe");
         setContentView(R.layout.initialactivity);
         // 3/6/2016 start change
         Intent intent = getIntent();
@@ -173,7 +174,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         senseData = true;
         Toast.makeText(this, "DB CONNECTED", Toast.LENGTH_SHORT).show();
     }
-    public void uploadDB(){
+    public void uploadDB(View view){
         DatabaseUploader dbUploader = new DatabaseUploader();
         File database = getApplicationContext().getDatabasePath("MyContacts1.db");
         if (database.exists()) {

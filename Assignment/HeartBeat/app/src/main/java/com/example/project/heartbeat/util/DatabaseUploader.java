@@ -124,7 +124,7 @@ public class DatabaseUploader extends AsyncTask<File, Void,Void> {
 
             DataOutputStream outputStream = new DataOutputStream( connection.getOutputStream() );
             outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-            //outputStream.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + pathToOurFile +"\"" + lineEnd);
+            outputStream.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\"" + "Group5.db" +"\"" + lineEnd);
             outputStream.writeBytes(lineEnd);
 
             bytesAvailable = fileInputStream.available();

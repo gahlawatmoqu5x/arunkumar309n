@@ -102,44 +102,32 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("messageAge", ageEditText.getText().toString() );
         startActivity(intent);
 /*
-
         try{
             RadioButton rad=(RadioButton) findViewById(radioId);
             String gender=rad.getText().toString();
             System.out.println("=================="+gender);
-
             // Opens a current database or creates it
             // Pass the database name, designate that only this app can use it
             // and a DatabaseErrorHandler in the case of database corruption
             contactsDB = this.openOrCreateDatabase("MyContacts1.db", MODE_PRIVATE, null);
-
             // Execute an SQL statement that isn't select
             contactsDB.execSQL("CREATE TABLE IF NOT EXISTS contacts2 " +
                     "(id integer primary key, name VARCHAR, age VARCHAR);");
-
             // The database on the file system
             File database = getApplicationContext().getDatabasePath("MyContacts1.db");
-
             // Check if the database exists
             if (database.exists()) {
                 Toast.makeText(this, "Table Created", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Database Missing", Toast.LENGTH_SHORT).show();
             }
-
-
             // Execute SQL statement to insert new data
             contactsDB.execSQL("INSERT INTO contacts2 (name, age) VALUES ('" +
                     contactName + "', '" + Contactage + "');");
-
         }
-
         catch(Exception e){
-
             Log.e("CONTACTS ERROR", "Error Creating Database");
-
         }
-
         Intent intent = new Intent(this, InitialActivity.class);
         intent.putExtra("message", contactName );
         intent.putExtra("messageAge", ageEditText.getText().toString() );
