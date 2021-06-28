@@ -122,8 +122,8 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         graph.addSeries(zseries);
         Viewport viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
-        viewport.setMinY(0);
-        viewport.setMaxY(80);
+        viewport.setMinY(-15);
+        viewport.setMaxY(15);
         viewport.setMinX(0);
         viewport.setMaxX(N);
         viewport.setScrollable(false);
@@ -152,17 +152,17 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
                 }
 
             }
-            xaxisValue = (int) event.values[0] + 20;
-            yaxisValue = (int) event.values[1] + 30;
-            zaxisValue = (int) event.values[2] + 10;
+            xaxisValue = (int) event.values[0] ;
+            yaxisValue = (int) event.values[1] ;
+            zaxisValue = (int) event.values[2] ;
 
 
             // normalizing by adding +30
             // we have to discuss what to do with the xaxisValue because I am not using it
         }
-         xaxisValue = (int) event.values[0]+ 20;
-        yaxisValue = (int) event.values[1] + 30;
-        zaxisValue = (int) event.values[2]+ 10;
+         xaxisValue = (int) event.values[0];
+        yaxisValue = (int) event.values[1] ;
+        zaxisValue = (int) event.values[2];
 
         // normalizing by adding +30
         // we have to discuss what to do with the xaxisValue because I am not using it
@@ -259,23 +259,23 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     }
 
     // add random data to graph
-    private void addEntry() {
-        String contactName = nameEditText.getText().toString();
-        // here, we choose to display max 10 points on the viewport and we scroll to end
-        Object datax = xqueue.poll();
-        Object datay = yqueue.poll();
-        Object dataz=zqueue.poll();
-
-        if (datax != null && datay!=null && dataz!=null && pause) {
-            xseries.appendData(new DataPoint(lastX, (double) datax), true, 10);
-            yseries.appendData(new DataPoint(lastX, (double) datay), true, 10);
-            zseries.appendData(new DataPoint(lastX++, (double) dataz), true, 10);
-            //textField.setText(Double.toString((Double) datax));
-
-            AccelorometerDB.execSQL("INSERT INTO MyAccTable1 (name, xaxis, yaxis, zaxis) VALUES ('" +
-                    contactName + "', '" + xaxisValue + "', '" + yaxisValue + "', '" + zaxisValue + "');");
-        }
-    }
+//    private void addEntry() {
+//        String contactName = nameEditText.getText().toString();
+//        // here, we choose to display max 10 points on the viewport and we scroll to end
+//        Object datax = xqueue.poll();
+//        Object datay = yqueue.poll();
+//        Object dataz=zqueue.poll();
+//
+//        if (datax != null && datay!=null && dataz!=null && pause) {
+//            xseries.appendData(new DataPoint(lastX, (double) datax), true, 10);
+//            yseries.appendData(new DataPoint(lastX, (double) datay), true, 10);
+//            zseries.appendData(new DataPoint(lastX++, (double) dataz), true, 10);
+//            //textField.setText(Double.toString((Double) datax));
+//
+//            AccelorometerDB.execSQL("INSERT INTO MyAccTable1 (name, xaxis, yaxis, zaxis) VALUES ('" +
+//                    contactName + "', '" + xaxisValue + "', '" + yaxisValue + "', '" + zaxisValue + "');");
+//        }
+//    }
     public void startFunc(View view){
        // textField.setText(R.string.startPressed);
         pause = true;
