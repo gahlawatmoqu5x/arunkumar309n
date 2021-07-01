@@ -40,9 +40,18 @@ import com.example.project.heartbeat.util.DatabaseUploader;
 public class InitialActivity extends AppCompatActivity implements SensorEventListener {
 
 
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // dummey method
+    }
+    @Override
+    public void onBackPressed() {
+        System.out.println("Bye bye");
+        AccelorometerDB.close();;
+        AccelorometerDB=null;
+        super.onBackPressed();
+
     }
 
     // 3/6/2016 start change
@@ -146,6 +155,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
                 zqueue.add(z);
                 if ((curTime - lastUpdate) > 1000) {
                     lastUpdate = curTime;
+                    if(AccelorometerDB!=null)
                     AccelorometerDB.execSQL("INSERT INTO " + tableName + "(timestamp, xValue, yValue, zValue) VALUES ('" +
                             curTime + "', '" + x + "', '" + y + "', '" + z + "');");
 
@@ -336,9 +346,9 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         pause = false;
         graph.removeAllSeries();
         // 3/6/2016 start change
-        Intent intent = new Intent(this, Display.class);
-        intent.putExtra("tableName", tableName).putExtra("message1", message);
-        startActivity(intent);
+//        Intent intent = new Intent(this, Display.class);
+//        intent.putExtra("tableName", tableName).putExtra("message1", message);
+//        startActivity(intent);
         // 3/6/2016 start change
 
     }

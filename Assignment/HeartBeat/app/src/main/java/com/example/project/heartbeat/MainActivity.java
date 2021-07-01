@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
         radioGenderGroup = (RadioGroup) findViewById(R.id.radioGroup2);
     }
     public void gotoNext(View view) {
-//       Intent intent = new Intent(this, Display.class);
-//        startActivity(intent);
+      Intent intent = new Intent(this, Display.class);
+        startActivity(intent);
         // Do something in response to button
     }
 

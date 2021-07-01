@@ -153,7 +153,9 @@ public class DatabaseUploader extends AsyncTask<File, Void,Void> {
 
             fileInputStream.close();
             outputStream.flush();
+
             outputStream.close();
+            connection.disconnect();
         }
         catch (Exception ex)
         {
