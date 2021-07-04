@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -102,6 +103,8 @@ TextView displayEditText,displayContactsDbEditTest;
 //        displayEditText.setText("Hi");
         displayContactsDbEditTest = (TextView) findViewById(R.id.editText6);
         displayContactsDbEditTest.setTextSize(16);
+        displayContactsDbEditTest.setMaxLines(Integer.MAX_VALUE);
+        displayContactsDbEditTest.setMovementMethod(new ScrollingMovementMethod());
         refreshText();
 
 
