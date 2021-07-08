@@ -50,6 +50,8 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         System.out.println("Bye bye");
         AccelorometerDB.close();;
         AccelorometerDB=null;
+        SM.unregisterListener(this);
+        this.finish();
         super.onBackPressed();
 
     }
@@ -87,6 +89,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     private boolean pause = false;
     private boolean senseData = false;
     final int N = 1000;
+    private boolean startPressed = false;
 
 
     @Override
@@ -106,7 +109,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         if (intent.getBooleanExtra("tableExists", false)) tableExists = true;
         else tableExists = false;
         if (tableExists)
-            Toast.makeText(this, "Welcome back, " + userName + "!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Welcome back, " + userName + "!", (Toast.LENGTH_SHORT)).show();
         else
             Toast.makeText(this, "Happy to have you, " + userName + "! :)", Toast.LENGTH_SHORT).show();
 
@@ -158,7 +161,9 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
                     if(AccelorometerDB!=null)
                     AccelorometerDB.execSQL("INSERT INTO " + tableName + "(timestamp, xValue, yValue, zValue) VALUES ('" +
                             curTime + "', '" + x + "', '" + y + "', '" + z + "');");
-
+                    if(startPressed){
+                        getValueFromTable();
+                    }
                 }
 
             }
@@ -263,7 +268,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
                 }
             }
             else{
-                Toast.makeText(this, "Not enough values to plot!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Not enough values to plot - Wait for atleast 10 seconds!",Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -288,7 +293,13 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
 //    }
     public void startFunc(View view){
        // textField.setText(R.string.startPressed);
+        if(!pause){
+            graph.addSeries(xseries);
+            graph.addSeries(yseries);
+            graph.addSeries(zseries);
+        }
         pause = true;
+        startPressed = true;
         getValueFromTable();
 
 /*
