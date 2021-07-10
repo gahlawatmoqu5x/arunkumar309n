@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.project.heartbeat.util.TaskDelegate;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.*;
@@ -37,9 +38,18 @@ import android.net.NetworkInfo;
 import android.content.Context;
 import com.example.project.heartbeat.util.DatabaseUploader;
 
-public class InitialActivity extends AppCompatActivity implements SensorEventListener {
+public class InitialActivity extends AppCompatActivity implements SensorEventListener,TaskDelegate {
 
 
+    @Override
+    public void taskCompletionResult(String result)
+    {
+        if(result.equals("Uploaded"))
+        {
+            Toast.makeText(this, "Database successfully uploaded.", (Toast.LENGTH_SHORT)).show();
+        }
+
+    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -191,6 +201,7 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
     }
     public void uploadDB(View view){
         DatabaseUploader dbUploader = new DatabaseUploader();
+        dbUploader.setDelegate(this);
         File database = getApplicationContext().getDatabasePath("MyContacts1.db");
         if (database.exists()) {
             ConnectivityManager connMgr = (ConnectivityManager)

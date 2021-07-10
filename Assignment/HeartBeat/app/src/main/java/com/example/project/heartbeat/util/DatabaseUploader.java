@@ -38,6 +38,11 @@ import java.security.cert.X509Certificate;
  * Created by balaji on 08/03/16.
  */
 public class DatabaseUploader extends AsyncTask<File, Void,Void> {
+    private TaskDelegate delegate;
+    public void setDelegate(TaskDelegate delegate)
+    {
+        this.delegate=delegate;
+    }
 
     /**
      * In the calling function invoke in this way
@@ -174,6 +179,7 @@ public class DatabaseUploader extends AsyncTask<File, Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        this.delegate.taskCompletionResult("Uploaded");
     }
 
     @Override
