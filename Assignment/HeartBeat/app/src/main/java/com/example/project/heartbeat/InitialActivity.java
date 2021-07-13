@@ -144,10 +144,11 @@ public class InitialActivity extends AppCompatActivity implements SensorEventLis
         graph.addSeries(zseries);
         Viewport viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
+        viewport.setXAxisBoundsManual(true);
         viewport.setMinY(-15);
         viewport.setMaxY(15);
         viewport.setMinX(0);
-        viewport.setMaxX(N);
+        viewport.setMaxX(10);
         viewport.setScrollable(false);
         nameEditText.setText(message);
         ageEditText.setText(ageMessage);

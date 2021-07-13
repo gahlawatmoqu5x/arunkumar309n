@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+
     public void CreateuserInDb(View view) {
         Intent intent = new Intent(this, InitialActivity.class);
         contactName = nameEditText.getText().toString();
@@ -81,7 +82,10 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             contactsDB = this.openOrCreateDatabase("MyContacts1.db", MODE_PRIVATE, null);
+            contactName=contactName.replace("_","");
+            userID=userID.replace("_","");
             tableName = contactName + "_" + Contactage + "_" + userID + "_" + gender;
+            tableName=tableName.replace(" ","");
             try {
                 Cursor c = null;
                 c = contactsDB.query(tableName, null, null, null, null, null, null);
