@@ -73,14 +73,15 @@ public class MainActivity extends AppCompatActivity {
         Contactage = ageEditText.getText().toString();
         userID=idEditText.getText().toString();
         int radioId=radioGenderGroup.getCheckedRadioButtonId();
-        RadioButton rad=(RadioButton) findViewById(radioId);
-        gender=rad.getText().toString();
+      
         if(nullOrEmptyCheck(contactName) || nullOrEmptyCheck(Contactage) || nullOrEmptyCheck(userID) || radioId==-1)
         {
             Toast.makeText(this, "One or more fields empty", Toast.LENGTH_SHORT).show();
             return;
         }
         else {
+            RadioButton rad=(RadioButton) findViewById(radioId);
+            gender=rad.getText().toString();
             contactsDB = this.openOrCreateDatabase("MyContacts1.db", MODE_PRIVATE, null);
             contactName=contactName.replace("_","");
             userID=userID.replace("_","");
